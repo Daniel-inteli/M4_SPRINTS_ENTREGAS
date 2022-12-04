@@ -28,17 +28,21 @@
    border-radius: 50%;
   }
 
-  .barra {
+  .jogador1 {
    position: absolute;
    width: 30px;
    height: 200px;
    background-color: rgb(27, 22, 22);
    top: 250px;
-  }
-  .esquerda {
    left: 10px;
   }
-  .direita {
+  
+  .jogador2 {
+   position: absolute;
+   width: 30px;
+   height: 200px;
+   background-color: rgb(27, 22, 22);
+   top: 250px;
    left: 1260px;
   }
 
@@ -60,14 +64,14 @@
     var posPl2X,posPl2Y;
 
     //directions
-    var dirPY;
+    var dirPY1,dirPY2;
 
     //inicial position
     var posPl1InitY=250, posPl2InitY=250,posBallIniX=620,posBallIniY=300;
     
     //Sizes
-    var campoX=0,campoY=0,screenW=1280,screenH=720;
-    var barraW=20,barraH=140,ballW=20,ballH=20;
+    var campoX=0,campoY=0,screenW=1280,screenH=735;
+    var barraW=30,barraH=200,ballW=30,ballH=30;
 
     //
     var ballX,ballY;
@@ -80,35 +84,97 @@
     var button;
     game=false;
    
-   
+    function plControl(){
+      if(game){
+        posPl1Y+=pl1Speed*dirPY1;
+        if(
+          ((posPl1Y+barraH) >=screenH)||((posPl1Y)<=5)
+          ){
+          posPl1Y+=(pl1Speed*dirPY1)*(-1);
+        }
+        player1.style.top=posPl1Y + "px";
+        posPl2Y+=pl2Speed*dirPY2;
+        if(
+          ((posPl2Y+barraH) >=screenH)||((posPl2Y)<=5)
+          ){
+          posPl2Y+=(pl2Speed*dirPY2)*(-1);
+        }
+        player2.style.top=posPl2Y + "px";
+       }
+    }
+    function ballControl(){
+      posBallX+=ballSpeed*ballX;
+      posBallY+=ballSpeed*ballY;
+      if(
+        (posBallX <=posPl1X+barraW) && (((posBallY+ballH)>=posPl1Y) && (posBallY <=posPl1Y+barraH))
+      ){
+        ballY=(((posBallY+(ballH/2)) - (posPl1Y+(barraH/2)))/16);
+        ballX*=-1;
+
+      }
+      if(
+        (posBallX <=posPl2X+barraW) && (((posBallY+ballH)>=posPl2Y) && (posBallY <=posPl2Y+barraH))
+      ){
+        ballY=(((posBallY+(ballH/2)) - (posPl2Y+(barraH/2)))/16);
+        ballX*=-1;
+      }
+      ball.style.top=posBallY + "px";
+      ball.style.left=posBallX +"px";
+    }
     function teclaDw(){
-      button=event.keycode;
-      if(button==38){
-         dirPY=-1;
+      button=event.keyCode;
+      if(button==87){//tecla pra cima
+         dirPY1=-1;
+      }else if(button==83){
+         dirPY1=+1;
+      }
+      else if(button==38){
+         dirPY2=-1;
       }else if(button==40){
-         dirPY=1;
+         dirPY2=+1;
       }
     }
-
-    function pong(){
-      if(!game){
-
+    function teclaUp(){
+      button=event.keyCode;
+      if(button==87){
+         dirPY1=0;
+      }else if(button==83){
+         dirPY1=0;
+      }else if(button==38){
+         dirPY2=0;
+      }else if(button==40){
+         dirPY2=0;
       }
-      frames=requestAnimationFrame("pong")
+    }
+    function pong(){
+      if(game){
+        plControl();
+        ballControl();
+      }
+      frames=requestAnimationFrame(pong)
     }
     function startGame(){
-      if(!jogo){
+      if(!game){
          cancelAnimationFrame(frames);
-         jogo=true;
-         dirPY=0;
+         game=true;
+         dirPY1=0;
+         dirPY2=0;
+         ballY=0;
+         if((Math.random()*10)<5){
+          ballX=-1;
+        }else{
+          ballX=+1;
+        }
          posBallX=posBallIniX;
          posBallY=posBallIniY;
-         posPl1Y=posPl1InitYl
+         posPl1Y=posPl1InitY;
          posPl2Y=posPl2InitY;
+         pong();
       }
 
     }
     function start(){
+      ballSpeed=pl1Speed=pl2Speed=5;
       btIniciar=document.getElementById("btIniciar");
       btIniciar.addEventListener("click",startGame);
       player1=document.getElementById("dvJogador1");
@@ -118,6 +184,7 @@
       document.addEventListener("keydown",teclaDw);
       document.addEventListener("keyup",teclaUp);
     }
+    window.addEventListener("load",start);
 
  </script>
 
@@ -126,8 +193,8 @@
 <body>
  <div id="dvJogo">
   <div id="dvBola"></div>
-  <div id="dvJogador1" class="barra esquerda"></div>
-  <div id="dvJogador2" class="barra direita"> </div>
+  <div id="dvJogador1" class="jogador1"></div>
+  <div id="dvJogador2" class="jogador2"> </div>
  </div>
  <div id="dvPainel">
   <div class="itemPainel">

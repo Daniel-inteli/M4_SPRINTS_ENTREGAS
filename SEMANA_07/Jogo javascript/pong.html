@@ -53,8 +53,9 @@
     var player1;
     var player2;
     var ball;
-    var painelPoints;
-
+    var painelPoints1;
+    var painelPoints2;
+    var painelWinner;
     //animations
     var game,frames;
 
@@ -80,7 +81,8 @@
     var ballSpeed,pl1Speed,pl2Speed;
 
     //control
-    var score=0;
+    var score1=0;
+    var score2=0
     var button;
     game=false;
    
@@ -105,11 +107,12 @@
     function ballControl(){
       posBallX+=ballSpeed*ballX;
       posBallY+=ballSpeed*ballY;
+      //colisao
       if(
         (posBallX <= posPl1X+barraW) && 
         ((posBallY+ballH >= posPl1Y) && (posBallY <= posPl1Y+barraH))
       ){
-        ballY=(((posBallY+(ballH/2)) - (posPl1Y+(barraH/2)))/16);
+        ballY=(((posBallY+(ballH/2)) - (posPl1Y+(barraH/2)))/32);
         ballX*=-1;
 
       }
@@ -117,11 +120,60 @@
         (posBallX >= posPl2X+barraW) && 
         ((posBallY+ballH >= posPl2Y) && (posBallY <= posPl2Y+barraH))
       ){
-        ballY=(((posBallY+(ballH/2)) - (posPl2Y+(barraH/2)))/16);
+        ballY=(((posBallY+(ballH/2)) - (posPl2Y+(barraH/2)))/32);
         ballX*=-1;
       }
+      //limite superior e inferior
+      if((posBallY >=700) || (posBallY<=10)){
+        ballY*=-1;
+      }
+      //limite de tela eixo x
+      if(
+        posBallX>=(screenW-ballW)){
+          ballSpeed=0;
+          posBallX=posBallIniX;
+          posBallY=posBallIniY +(ballH);
+          posPl1Y=posPl1InitY;
+          posPl2Y=posPl2InitY;
+          player1.style.top=posPl1Y + "px";
+          player2.style.top=posPl2Y + "px";
+          score1++;
+          painelPoints1.value=score1;
+          game=false;
+        }
+        else if(
+          posBallX<=5){
+          ballSpeed=0;
+          posBallX=posBallIniX;
+          posBallY=posBallIniY
+          posPl1Y=posPl1InitY;
+          posPl2Y=posPl2InitY;
+          player1.style.top=posPl1Y + "px";
+          player2.style.top=posPl2Y + "px";
+          score2++;
+          painelPoints2.value=score2;
+          game=false;
+          }
+      
       ball.style.top=posBallY + "px";
       ball.style.left=posBallX +"px";
+    }
+    function vencedor(){
+      if(painelPoints1.value==3){
+        painelWinner.value="jogador1 venceu!";
+        score1=0;
+        score2=0;
+        painelPoints1.value=0;
+        painelPoints2.value=0;
+        game=false;
+      }else if (painelPoints2.value==3){
+        painelWinner.value="jogador2 venceu!";
+        score1=0;
+        score2=0;
+        painelPoints1.value=0;
+        painelPoints2.value=0;
+        game=false;
+      }
     }
     function teclaDw(){
       button=event.keyCode;
@@ -152,11 +204,13 @@
       if(game){
         plControl();
         ballControl();
+        vencedor();
       }
       frames=requestAnimationFrame(pong)
     }
     function startGame(){
       if(!game){
+         ballSpeed=pl1Speed=pl2Speed=6;
          cancelAnimationFrame(frames);
          game=true;
          dirPY1=0;
@@ -173,18 +227,20 @@
          posPl1X=posPl1InitX;
          posPl2X=posPl2InitX;
          posPl2Y=posPl2InitY;
+         painelWinner.value="";
          pong();
       }
 
     }
     function start(){
-      ballSpeed=pl1Speed=pl2Speed=5;
       btIniciar=document.getElementById("btIniciar");
       btIniciar.addEventListener("click",startGame);
       player1=document.getElementById("dvJogador1");
       player2=document.getElementById("dvJogador2");
       ball=document.getElementById("dvBola");
-      painelPoints=document.getElementById("txtPontos");
+      painelPoints1=document.getElementById("txtPontos1");
+      painelPoints2=document.getElementById("txtPontos2");
+      painelWinner=document.getElementById("txtVencedor");
       document.addEventListener("keydown",teclaDw);
       document.addEventListener("keyup",teclaUp);
     }
@@ -202,13 +258,21 @@
  </div>
  <div id="dvPainel">
   <div class="itemPainel">
-   <label>Pontos</label>
-   <input type="text" id="txtPontos" value="0" size="10">
+   <label>Pontos Jogador1</label>
+   <input type="text" disabled="disabled" id="txtPontos1" value="0" size="10">
+   <label>Pontos Jogador 2</label>
+   <input type="text" disabled="disabled" id="txtPontos2" value="0" size="10">
+   <label>Vencedor</label>
+   <input type="text" disabled="disabled" id="txtVencedor" value="" size="15">
   </div>
   <div class="itemPainel">
    <button id="btIniciar">Iniciar</button>
   </div>
  </div>
+ <h1>Bem vindo a pong!</h1>
+ <h2>O primeiro a marcar 3 pontos ganha</h2>
+ <h2>Comandos: W e S para movimentar a barra do jogador1 </h2>
+ <h2>Tecla para cima e para baixo para movimentar a barra do jogador2 </h2>
 </body>
 
 </html>

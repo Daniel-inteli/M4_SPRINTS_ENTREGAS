@@ -20,7 +20,7 @@
   }
   #dvBola {
    position: absolute;
-   top: 300px;
+   top: 325px;
    left: 620px;
    width: 30px;
    height: 30px;
@@ -33,7 +33,7 @@
    width: 30px;
    height: 200px;
    background-color: rgb(27, 22, 22);
-   top: 250px;
+   top: 240px;
    left: 10px;
   }
   
@@ -42,7 +42,7 @@
    width: 30px;
    height: 200px;
    background-color: rgb(27, 22, 22);
-   top: 250px;
+   top: 240px;
    left: 1260px;
   }
 
@@ -67,7 +67,7 @@
     var dirPY1,dirPY2;
 
     //inicial position
-    var posPl1InitY=250, posPl2InitY=250,posBallIniX=620,posBallIniY=300;
+    var posPl1InitX=0, posPl1InitY=240,posPl2InitX=1210, posPl2InitY=240,posBallIniX=620,posBallIniY=325;
     
     //Sizes
     var campoX=0,campoY=0,screenW=1280,screenH=735;
@@ -106,14 +106,16 @@
       posBallX+=ballSpeed*ballX;
       posBallY+=ballSpeed*ballY;
       if(
-        (posBallX <=posPl1X+barraW) && (((posBallY+ballH)>=posPl1Y) && (posBallY <=posPl1Y+barraH))
+        (posBallX <= posPl1X+barraW) && 
+        ((posBallY+ballH >= posPl1Y) && (posBallY <= posPl1Y+barraH))
       ){
         ballY=(((posBallY+(ballH/2)) - (posPl1Y+(barraH/2)))/16);
         ballX*=-1;
 
       }
       if(
-        (posBallX <=posPl2X+barraW) && (((posBallY+ballH)>=posPl2Y) && (posBallY <=posPl2Y+barraH))
+        (posBallX >= posPl2X+barraW) && 
+        ((posBallY+ballH >= posPl2Y) && (posBallY <= posPl2Y+barraH))
       ){
         ballY=(((posBallY+(ballH/2)) - (posPl2Y+(barraH/2)))/16);
         ballX*=-1;
@@ -168,6 +170,8 @@
          posBallX=posBallIniX;
          posBallY=posBallIniY;
          posPl1Y=posPl1InitY;
+         posPl1X=posPl1InitX;
+         posPl2X=posPl2InitX;
          posPl2Y=posPl2InitY;
          pong();
       }

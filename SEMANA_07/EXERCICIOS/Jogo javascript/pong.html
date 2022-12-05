@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+ <meta charset="utf-8" />
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+ <style>
+  #dvPainel {
+   display: flex;
+   height: 30px;
+   align-items: center;
+  }
+  .itemPainel {
+   margin: 5px;
+  }
+  #dvJogo {
+   width: 1280px;
+   height: 720px;
+   border: 2px solid #000;
+   background-image: linear-gradient(rgb(93, 65, 153), rgb(41, 0, 106));
+  }
+  #dvBola {
+   position: absolute;
+   top: 325px;
+   left: 620px;
+   width: 30px;
+   height: 30px;
+   background-color: rgb(255, 255, 255);
+   border-radius: 50%;
+  }
+
+  .jogador1 {
+   position: absolute;
+   width: 30px;
+   height: 200px;
+   background-color: rgb(27, 22, 22);
+   top: 240px;
+   left: 10px;
+  }
+  
+  .jogador2 {
+   position: absolute;
+   width: 30px;
+   height: 200px;
+   background-color: rgb(27, 22, 22);
+   top: 240px;
+   left: 1260px;
+  }
+
+ </style>
+ 
+
+</head>
+
+<body>
+ <div id="dvJogo">
+  <div id="dvBola"></div>
+  <div id="dvJogador1" class="jogador1"></div>
+  <div id="dvJogador2" class="jogador2"> </div>
+ </div>
+ <div id="dvPainel">
+  <div class="itemPainel">
+   <label>Pontos Jogador1</label>
+   <input type="text" disabled="disabled" id="txtPontos1" value="0" size="10">
+   <label>Pontos Jogador 2</label>
+   <input type="text" disabled="disabled" id="txtPontos2" value="0" size="10">
+   <label>Vencedor</label>
+   <input type="text" disabled="disabled" id="txtVencedor" value="" size="15">
+  </div>
+  <div class="itemPainel">
+   <button id="btIniciar">Iniciar</button>
+  </div>
+ </div>
+ <h1>Bem vindo a pong!</h1>
+ <h2>O primeiro a marcar 3 pontos ganha</h2>
+ <h2>Comandos: W e S para movimentar a barra do jogador1 </h2>
+ <h2>Tecla para cima e para baixo para movimentar a barra do jogador2 </h2>
+ <script src="script.js"></script>
+</body>
+
+</html>

@@ -8,8 +8,8 @@ int lcdColumns = 16;
 int lcdRows = 2;
 LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);
 
-const char* ssid = "SHARE-RESIDENTE";
-const char* password = "Share@residente";
+const char* ssid = "SUA-REDE-WIFI";
+const char* password = "SENHA-DO-WIFI";
 
 WebServer server(80);
 

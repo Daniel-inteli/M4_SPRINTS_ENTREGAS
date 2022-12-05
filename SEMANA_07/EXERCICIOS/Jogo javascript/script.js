@@ -1,4 +1,4 @@
-    let url = "http://10.254.17.26/";
+    let url = "http://IP-DO-SEU-ESP32";
 
     // interactives
     var btIniciar;
